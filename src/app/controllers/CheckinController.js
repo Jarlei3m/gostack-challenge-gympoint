@@ -1,4 +1,4 @@
-import { format, subDays, eachDayOfInterval } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import en from 'date-fns/locale/en-US';
 import Enrollment from '../models/Enrollment';
 import Student from '../models/Student';
