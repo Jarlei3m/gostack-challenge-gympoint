@@ -1,9 +1,9 @@
-import { format } from 'date-fns';
-import en from 'date-fns/locale/en-US';
 import HelpOrder from '../models/HelpOrder';
 import Student from '../models/Student';
 import User from '../models/User';
-import Mail from '../../lib/Mail';
+
+import HelpOrderMail from '../jobs/HelpOrderMail';
+import Queue from '../../lib/Queue';
 
 class HelpOrdersController {
   async index(req, res) {
@@ -52,17 +52,11 @@ class HelpOrdersController {
       where: { email: 'admin@gympoint.com' },
     });
 
-    await Mail.sendMail({
-      to: `${name} <${email}>`,
-      subject: 'Support Request',
-      template: 'question',
-      context: {
-        student: student.name,
-        question,
-        date: format(new Date(), " MMMM dd',' yyyy ", {
-          locale: en,
-        }),
-      },
+    await Queue.add(HelpOrderMail.key, {
+      name,
+      email,
+      student,
+      question,
     });
 
     return res.json(helpOrder);
