@@ -6,6 +6,8 @@ import SessionController from './app/controllers/SessionController';
 import PlanController from './app/controllers/PlanController';
 import EnrollmentController from './app/controllers/EnrollmentController';
 import CheckinController from './app/controllers/CheckinController';
+import HelpOrdersController from './app/controllers/HelpOrdersController';
+import AnswerOrdersController from './app/controllers/AnswerOrdersController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -14,6 +16,10 @@ const routes = new Router();
 routes.post('/users', UserController.store);
 
 routes.post('/sessions', SessionController.store);
+
+// help_orders
+routes.get('/students/:id/help-orders', HelpOrdersController.index);
+routes.post('/students/:id/help-orders', HelpOrdersController.store);
 
 routes.use(authMiddleware);
 
@@ -35,5 +41,9 @@ routes.delete('/enrollment/:id', EnrollmentController.delete);
 // check in
 routes.post('/students/:id/checkins', CheckinController.store);
 routes.get('/students/:id/checkins', CheckinController.index);
+
+// list of unanswered questions
+routes.get('/students/unanswered', AnswerOrdersController.index);
+routes.post('/students/:id/answer', AnswerOrdersController.store);
 
 export default routes;
